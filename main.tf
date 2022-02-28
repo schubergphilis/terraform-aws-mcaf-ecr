@@ -14,12 +14,12 @@ locals {
     }
   },{
     rulePriority = 2
-    description  = "Keep untagged images for 14 days"
+    description  = "Keep untagged images for 1 day"
     selection = {
       tagStatus   = "untagged"
       countType   = "sinceImagePushed"
       countUnit   = "days"
-      countNumber = 14
+      countNumber = 1
     }
     action = {
       type = "expire"
