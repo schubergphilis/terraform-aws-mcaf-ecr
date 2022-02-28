@@ -12,6 +12,18 @@ locals {
     action = {
       type = "expire"
     }
+  },{
+    rulePriority = 2
+    description  = "Keep untagged images for 14 days"
+    selection = {
+      tagStatus   = "untagged"
+      countType   = "sinceImagePushed"
+      countUnit   = "days"
+      countNumber = 14
+    }
+    action = {
+      type = "expire"
+    }
   }]
 
   readonly_ecr_policy = length(var.principals_readonly_access) > 0 ? {
