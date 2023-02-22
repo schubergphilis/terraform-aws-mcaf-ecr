@@ -1,4 +1,5 @@
 # terraform-aws-mcaf-ecr
+
 Terraform module to setup and manage AWS Elastic Container Registry (ECR) repositories.
 
 ## Usage
