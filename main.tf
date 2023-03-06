@@ -1,5 +1,5 @@
 locals {
-  ecr_policies = merge(local.readonly_ecr_policy, var.additional_ecr_policy_statements)
+  ecr_policies = var.create_ecr_policy ? merge(local.readonly_ecr_policy, var.additional_ecr_policy_statements) : null
 
   policy_rule_untagged_image = [{
     rulePriority = 1
