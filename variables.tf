@@ -11,6 +11,12 @@ variable "additional_ecr_policy_statements" {
   default     = null
 }
 
+variable "create_ecr_policy" {
+  type        = map(bool)
+  description = "Set to false to prevent the module from creating the ecr repository policy"
+  default     = {}
+}
+
 variable "enable_lifecycle_policy" {
   type        = bool
   description = "Set to false to prevent the module from adding any lifecycle policies to any repositories"
