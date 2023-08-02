@@ -15,8 +15,6 @@ locals {
     }
   }]
 
-  # only 5 policy rules are allowed - so keeping only 4 from extra_policy_rules
-  additional_policy_rules = slice(var.extra_policy_rules, 0, 4)
   policy_rules_all        = concat(local.policy_rule_untagged_image, local.additional_policy_rules)
 
   readonly_ecr_policy = length(var.principals_readonly_access) > 0 ? {
