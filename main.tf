@@ -15,6 +15,10 @@ locals {
     }
   }]
 
+  # only 5 policy rules are allowed - so keeping only 4 from extra_policy_rules
+  additional_policy_rules = slice(var.extra_policy_rules, 0, 4)
+  policy_rules_all        = concat(local.policy_rule_untagged_image, local.additional_policy_rules)
+
   readonly_ecr_policy = length(var.principals_readonly_access) > 0 ? {
     "ReadonlyAccess" = {
       effect = "Allow"
@@ -61,7 +65,7 @@ resource "aws_ecr_lifecycle_policy" "default" {
   repository = aws_ecr_repository.default[each.value].name
 
   policy = jsonencode({
-    rules = local.policy_rule_untagged_image
+    rules = local.policy_rules_all
   })
 }
 
@@ -85,5 +89,5 @@ data "aws_iam_policy_document" "default" {
 resource "aws_ecr_repository_policy" "default" {
   for_each   = toset(local.ecr_policies != null ? var.repository_names : [])
   repository = aws_ecr_repository.default[each.value].name
-  policy     = join("", data.aws_iam_policy_document.default.*.json)
+  policy     = join("", data.aws_iam_policy_document.default[*].json)
 }

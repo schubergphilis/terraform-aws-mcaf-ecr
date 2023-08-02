@@ -5,8 +5,8 @@
 *.tfstate
 *.tfstate.*
 
-# Terraform lock file
-.terraform.lock.hcl
-
 # .tfvars files
 *.tfvars
+
+# CheckOv pre-commit external modules path
+**/.external_modules/*
