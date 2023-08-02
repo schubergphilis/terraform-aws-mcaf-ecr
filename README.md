@@ -20,7 +20,7 @@ module "ecr" {
     lambda = {
       effect = "Allow"
 
-      principal = { 
+      principal = {
         type        = "service"
         identifiers = ["lambda.amazonaws.com"]
       }
