@@ -14,14 +14,11 @@ locals {
       type = "expire"
     }
   }]
-  additional_policy_rules = [
-    length(var.extra_policy_rules) > 0 ? element(var.extra_policy_rules, 0) : null,
-    length(var.extra_policy_rules) > 1 ? element(var.extra_policy_rules, 1) : null,
-    length(var.extra_policy_rules) > 2 ? element(var.extra_policy_rules, 2) : null,
-    length(var.extra_policy_rules) > 3 ? element(var.extra_policy_rules, 3) : null,
-  ]
-  policy_rules_all = concat(local.policy_rule_untagged_image, local.additional_policy_rules)
 
+  # we can only implement 5 rules so slicing extra rules from extra_policy_rules
+  extra_rules_count = length(var.extra_policy_rules)
+  num_elements_to_slice = min(4, local.extra_rules_count)
+  policy_rules_all = concat(local.policy_rule_untagged_image, slice(var.extra_policy_rules, 0, local.num_elements_to_slice))
 
   readonly_ecr_policy = length(var.principals_readonly_access) > 0 ? {
     "ReadonlyAccess" = {
