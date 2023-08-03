@@ -14,7 +14,6 @@ locals {
       type = "expire"
     }
   }]
-
   additional_policy_rules = [
     length(var.extra_policy_rules) > 0 ? element(var.extra_policy_rules, 0) : null,
     length(var.extra_policy_rules) > 1 ? element(var.extra_policy_rules, 1) : null,
@@ -22,6 +21,7 @@ locals {
     length(var.extra_policy_rules) > 3 ? element(var.extra_policy_rules, 3) : null,
   ]
   policy_rules_all = concat(local.policy_rule_untagged_image, local.additional_policy_rules)
+
 
   readonly_ecr_policy = length(var.principals_readonly_access) > 0 ? {
     "ReadonlyAccess" = {
@@ -64,12 +64,16 @@ resource "aws_ecr_repository" "default" {
   }
 }
 
+output "policy_rules_all_output" {
+  value = local.policy_rules_all
+}
+
 resource "aws_ecr_lifecycle_policy" "default" {
   for_each   = toset(var.enable_lifecycle_policy ? var.repository_names : [])
   repository = aws_ecr_repository.default[each.value].name
 
   policy = jsonencode({
-    rules = local.policy_rules_all
+    rules = local.policy_rule_untagged_image
   })
 }
 
