@@ -16,9 +16,7 @@ locals {
   }]
 
   # we can only implement 5 rules so slicing extra rules from extra_policy_rules
-  extra_rules_count     = length(var.extra_policy_rules)
-  num_elements_to_slice = min(4, local.extra_rules_count)
-  policy_rules_all      = concat(local.policy_rule_untagged_image, slice(var.extra_policy_rules, 0, local.num_elements_to_slice))
+  policy_rules_all = concat(local.policy_rule_untagged_image, slice(var.extra_policy_rules, 0, min(4, length(var.extra_policy_rules))))
 
   readonly_ecr_policy = length(var.principals_readonly_access) > 0 ? {
     "ReadonlyAccess" = {
