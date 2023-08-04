@@ -59,16 +59,12 @@ resource "aws_ecr_repository" "default" {
   }
 }
 
-output "policy_rules_all_output" {
-  value = local.policy_rules_all
-}
-
 resource "aws_ecr_lifecycle_policy" "default" {
   for_each   = toset(var.enable_lifecycle_policy ? var.repository_names : [])
   repository = aws_ecr_repository.default[each.value].name
 
   policy = jsonencode({
-    rules = local.policy_rule_untagged_image
+    rules = local.policy_rules_all
   })
 }
 
