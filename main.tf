@@ -93,7 +93,7 @@ data "aws_iam_policy_document" "default" {
 }
 
 resource "aws_ecr_repository_policy" "default" {
-  for_each   = toset(local.ecr_policies != null ? var.repository_names : [])
+  for_each   = toset(local.ecr_policies != null ? [for k in var.repository_names : k if try(var.create_ecr_policy[k], true)] : [])
   repository = aws_ecr_repository.default[each.value].name
   policy     = join("", data.aws_iam_policy_document.default.*.json)
 }
