@@ -95,5 +95,5 @@ data "aws_iam_policy_document" "default" {
 resource "aws_ecr_repository_policy" "default" {
   for_each   = toset(local.ecr_policies != null ? var.repository_names : [])
   repository = aws_ecr_repository.default[each.value].name
-  policy     = join("", data.aws_iam_policy_document.default.*.json)
+  policy     = join("", data.aws_iam_policy_document.default[*].json)
 }

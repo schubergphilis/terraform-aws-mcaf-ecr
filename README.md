@@ -2,47 +2,7 @@
 
 Terraform module to setup and manage AWS Elastic Container Registry (ECR) repositories.
 
-## Usage
-
-```hcl
-module "ecr" {
-  source           = "github.com/schubergphilis/terraform-aws-mcaf-ecr"
-  repository_names = ["image-x", "namespace/image-y"]
-}
-```
-
-```hcl
-module "ecr" {
-  source           = "github.com/schubergphilis/terraform-aws-mcaf-ecr"
-  repository_names = ["image-x", "namespace/image-y"]
-
-  additional_ecr_policy_statements = {
-    lambda = {
-      effect = "Allow"
-
-      principal = { 
-        type        = "service"
-        identifiers = ["lambda.amazonaws.com"]
-      }
-
-      actions = [
-        "ecr:BatchGetImage",
-        "ecr:DeleteRepositoryPolicy",
-        "ecr:GetDownloadUrlForLayerecr:GetRepositoryPolicy",
-        "ecr:SetRepositoryPolicy"
-      ]
-
-      condition = [
-        {
-          test     = "StringEquals"
-          values   = ["account-id"]
-          variable = "aws:PrincipalAccount"
-        }
-      ]
-    }
-  }
-}
-```
+IMPORTANT: We do not pin modules to versions in our examples. We highly recommend that in your code you pin the version to the exact version you are using so that your infrastructure remains stable.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -91,3 +51,7 @@ No modules.
 | <a name="output_arns"></a> [arns](#output\_arns) | n/a |
 | <a name="output_repository_url"></a> [repository\_url](#output\_repository\_url) | n/a |
 <!-- END_TF_DOCS -->
+
+## Licensing
+
+100% Open Source and licensed under the Apache License Version 2.0. See [LICENSE](https://github.com/schubergphilis/terraform-aws-mcaf-ecr/blob/master/LICENSE) for full details.
