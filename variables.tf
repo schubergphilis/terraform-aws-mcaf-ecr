@@ -16,6 +16,12 @@ variable "additional_ecr_policy_statements" {
   default     = null
 }
 
+variable "custom_lifecycle_policy_rules" {
+  type = string
+  description = "JSON definition of custom policy Rules"
+  default     = null
+}
+
 variable "enable_lifecycle_policy" {
   type        = bool
   description = "Set to false to prevent the module from adding any lifecycle policies to any repositories"
