@@ -5,7 +5,7 @@ locals {
     {
       rulePriority = 1
       description  = "Keep untagged images for 1 day"
-      selection    = {
+      selection = {
         tagStatus   = "untagged"
         countType   = "sinceImagePushed"
         countUnit   = "days"
@@ -19,7 +19,7 @@ locals {
 
   readonly_ecr_policy = length(var.principals_readonly_access) > 0 ? {
     "ReadonlyAccess" = {
-      effect    = "Allow"
+      effect = "Allow"
       principal = {
         type        = "AWS"
         identifiers = [for k in var.principals_readonly_access : "arn:aws:iam::${k}:root"]
