@@ -17,8 +17,8 @@ variable "additional_ecr_policy_statements" {
 }
 
 variable "custom_lifecycle_policy_rules" {
-  type = string
-  description = "JSON definition of custom policy Rules"
+  type        = string
+  description = "JSON definition of custom policy Rules, this will disable the default policy"
   default     = null
 }
 
