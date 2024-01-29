@@ -55,6 +55,11 @@ variable "principals_readonly_access" {
 variable "repository_names" {
   type        = list(string)
   description = "list of repository names, names can include namespaces: prefixes ending with a slash (/)"
+
+  validation {
+    condition     = length(var.repository_names) > 0
+    error_message = "At least one repository name must be provided"
+  }
 }
 
 variable "repository_tags" {
