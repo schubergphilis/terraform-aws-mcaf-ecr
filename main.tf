@@ -1,29 +1,23 @@
 locals {
   ecr_policies = merge(local.readonly_ecr_policy, var.additional_ecr_policy_statements)
 
-  policy_rule_untagged_image = [
-    {
-      rulePriority = 1
-      description  = "Keep untagged images for 1 day"
-      selection = {
-        tagStatus   = "untagged"
-        countType   = "sinceImagePushed"
-        countUnit   = "days"
-        countNumber = 1
-      }
-      action = {
-        type = "expire"
-      }
+  policy_rule_untagged_image = [{
+    action       = { type = "expire" }
+    description  = "Keep untagged images for 1 day"
+    rulePriority = 1
+
+    selection = {
+      countNumber = 1
+      countType   = "sinceImagePushed"
+      countUnit   = "days"
+      tagStatus   = "untagged"
     }
-  ]
+  }]
 
   readonly_ecr_policy = length(var.principals_readonly_access) > 0 ? {
     "ReadonlyAccess" = {
       effect = "Allow"
-      principal = {
-        type        = "AWS"
-        identifiers = [for k in var.principals_readonly_access : "arn:aws:iam::${k}:root"]
-      }
+
       actions = [
         "ecr:BatchCheckLayerAvailability",
         "ecr:BatchGetImage",
@@ -35,14 +29,20 @@ locals {
         "ecr:GetLifecyclePolicyPreview",
         "ecr:GetRepositoryPolicy",
         "ecr:ListImages",
-        "ecr:ListTagsForResource"
+        "ecr:ListTagsForResource",
       ]
+
+      principal = {
+        type        = "AWS"
+        identifiers = [for k in var.principals_readonly_access : "arn:aws:iam::${k}:root"]
+      }
     }
   } : null
 }
 
 resource "aws_ecr_repository" "default" {
-  for_each             = toset(var.repository_names)
+  for_each = toset(var.repository_names)
+
   name                 = each.value
   force_delete         = var.force_delete
   image_tag_mutability = var.image_tag_mutability
@@ -65,7 +65,8 @@ locals {
 }
 
 resource "aws_ecr_lifecycle_policy" "default" {
-  for_each   = toset(var.enable_lifecycle_policy ? var.repository_names : [])
+  for_each = toset(var.enable_lifecycle_policy ? var.repository_names : [])
+
   repository = aws_ecr_repository.default[each.value].name
 
   policy = local.ecr_policy_to_apply
@@ -77,14 +78,16 @@ data "aws_iam_policy_document" "default" {
 
   dynamic "statement" {
     for_each = local.ecr_policies
+
     content {
-      sid = statement.key
+      sid     = statement.key
+      actions = statement.value.actions
+      effect  = title(statement.value.effect)
+
       principals {
         type        = title(statement.value.principal.type)
         identifiers = statement.value.principal.identifiers
       }
-      actions = statement.value.actions
-      effect  = title(statement.value.effect)
 
       dynamic "condition" {
         for_each = statement.value.condition
@@ -100,7 +103,8 @@ data "aws_iam_policy_document" "default" {
 }
 
 resource "aws_ecr_repository_policy" "default" {
-  for_each   = toset(local.ecr_policies != null ? var.repository_names : [])
+  for_each = toset(local.ecr_policies != null ? var.repository_names : [])
+
   repository = aws_ecr_repository.default[each.value].name
   policy     = join("", data.aws_iam_policy_document.default[*].json)
 }
