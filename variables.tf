@@ -37,7 +37,7 @@ variable "force_delete" {
 variable "image_tag_mutability" {
   type        = string
   default     = "IMMUTABLE"
-  description = "The tag mutability setting for the repository. Must be: `MUTABLE`, `IMMUTABLE` or IMMUTABLE_WITH_EXCLUSION"
+  description = "The tag mutability setting for the repository. Must be: `MUTABLE`, `IMMUTABLE` or `IMMUTABLE_WITH_EXCLUSION`"
 
   validation {
     condition = (
@@ -45,7 +45,7 @@ variable "image_tag_mutability" {
       || length(var.image_tag_mutability_exclusion_filter) == 0
       || upper(var.image_tag_mutability) == "IMMUTABLE_WITH_EXCLUSION"
     )
-    error_message = "If image_tag_mutability_exclusion_filter is set (non-null and non-empty), image_tag_mutability must be 'IMMUTABLE_WITH_EXCLUSION'."
+    error_message = "If image_tag_mutability_exclusion_filter is set (non-null and non-empty), image_tag_mutability must be `IMMUTABLE_WITH_EXCLUSION`."
   }
 }
 
