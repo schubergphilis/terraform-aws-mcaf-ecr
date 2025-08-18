@@ -50,10 +50,10 @@ variable "image_tag_mutability" {
 }
 
 variable "image_tag_mutability_exclusion_filter" {
-  type = optional(list(object({
+  type = list(object({
     filter      = string
     filter_type = string
-  })))
+  }))
   default     = null
   description = "Map of image tag exclusion filters"
 }
