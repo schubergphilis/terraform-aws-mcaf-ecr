@@ -37,7 +37,25 @@ variable "force_delete" {
 variable "image_tag_mutability" {
   type        = string
   default     = "IMMUTABLE"
-  description = "The tag mutability setting for the repository. Must be: `MUTABLE` or `IMMUTABLE`"
+  description = "The tag mutability setting for the repository. Must be: `MUTABLE`, `IMMUTABLE` or IMMUTABLE_WITH_EXCLUSION"
+
+  validation {
+    condition = (
+      var.image_tag_mutability_exclusion_filter == null
+      || length(var.image_tag_mutability_exclusion_filter) == 0
+      || upper(var.image_tag_mutability) == "IMMUTABLE_WITH_EXCLUSION"
+    )
+    error_message = "If image_tag_mutability_exclusion_filter is set (non-null and non-empty), image_tag_mutability must be 'IMMUTABLE_WITH_EXCLUSION'."
+  }
+}
+
+variable "image_tag_mutability_exclusion_filter" {
+  type = optional(list(object({
+    filter      = string
+    filter_type = string
+  })))
+  default     = null
+  description = "Map of image tag exclusion filters"
 }
 
 variable "kms_key_arn" {
