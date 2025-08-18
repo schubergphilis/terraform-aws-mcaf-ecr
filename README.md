@@ -9,14 +9,14 @@ IMPORTANT: We do not pin modules to versions in our examples. We highly recommen
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.8.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.8.0 |
 
 ## Modules
 
@@ -36,11 +36,12 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_repository_names"></a> [repository\_names](#input\_repository\_names) | list of repository names, names can include namespaces: prefixes ending with a slash (/) | `list(string)` | n/a | yes |
-| <a name="input_additional_ecr_policy_statements"></a> [additional\_ecr\_policy\_statements](#input\_additional\_ecr\_policy\_statements) | Map of additional ecr repository policy statements | <pre>map(object({<br>    effect = string<br>    principal = object({<br>      type        = string<br>      identifiers = list(string)<br>    })<br>    actions = list(string)<br>    condition = optional(list(object({<br>      test     = string<br>      variable = string<br>      values   = list(string)<br>    })), [])<br>  }))</pre> | `null` | no |
+| <a name="input_additional_ecr_policy_statements"></a> [additional\_ecr\_policy\_statements](#input\_additional\_ecr\_policy\_statements) | Map of additional ecr repository policy statements | <pre>map(object({<br/>    effect = string<br/>    principal = object({<br/>      type        = string<br/>      identifiers = list(string)<br/>    })<br/>    actions = list(string)<br/>    condition = optional(list(object({<br/>      test     = string<br/>      variable = string<br/>      values   = list(string)<br/>    })), [])<br/>  }))</pre> | `null` | no |
 | <a name="input_custom_lifecycle_policy_rules"></a> [custom\_lifecycle\_policy\_rules](#input\_custom\_lifecycle\_policy\_rules) | JSON definition of custom policy Rules, this will disable the default policy | `string` | `null` | no |
 | <a name="input_enable_lifecycle_policy"></a> [enable\_lifecycle\_policy](#input\_enable\_lifecycle\_policy) | Set to false to prevent the module from adding any lifecycle policies to any repositories | `bool` | `true` | no |
 | <a name="input_force_delete"></a> [force\_delete](#input\_force\_delete) | When deleting a repository, force the deletion if it is not empty | `bool` | `false` | no |
-| <a name="input_image_tag_mutability"></a> [image\_tag\_mutability](#input\_image\_tag\_mutability) | The tag mutability setting for the repository. Must be: `MUTABLE` or `IMMUTABLE` | `string` | `"IMMUTABLE"` | no |
+| <a name="input_image_tag_mutability"></a> [image\_tag\_mutability](#input\_image\_tag\_mutability) | The tag mutability setting for the repository. Must be: `MUTABLE`, `IMMUTABLE` or IMMUTABLE\_WITH\_EXCLUSION | `string` | `"IMMUTABLE"` | no |
+| <a name="input_image_tag_mutability_exclusion_filter"></a> [image\_tag\_mutability\_exclusion\_filter](#input\_image\_tag\_mutability\_exclusion\_filter) | Map of image tag exclusion filters | <pre>list(object({<br/>    filter      = string<br/>    filter_type = string<br/>  }))</pre> | `null` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The KMS key ARN used for the repository encryption | `string` | `null` | no |
 | <a name="input_principals_readonly_access"></a> [principals\_readonly\_access](#input\_principals\_readonly\_access) | Principal ARNs to provide with readonly access to the ECR | `list(string)` | `[]` | no |
 | <a name="input_repository_tags"></a> [repository\_tags](#input\_repository\_tags) | Mapping of tags for a repository using repository name as key | `map(map(string))` | `{}` | no |
