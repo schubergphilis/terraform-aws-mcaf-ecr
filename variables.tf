@@ -56,6 +56,16 @@ variable "image_tag_mutability_exclusion_filter" {
   }))
   default     = null
   description = "Map of image tag exclusion filters"
+
+  validation {
+    condition = (
+      var.image_tag_mutability_exclusion_filter == null
+      || alltrue([
+        for f in var.image_tag_mutability_exclusion_filter : upper(f.filter_type) == "WILDCARD"
+      ])
+    )
+    error_message = "Every image_tag_mutability_exclusion_filter.filter_type must be 'WILDCARD' (case-insensitive)."
+  }
 }
 
 variable "kms_key_arn" {
