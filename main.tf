@@ -75,7 +75,7 @@ locals {
 resource "aws_ecr_lifecycle_policy" "default" {
   for_each = toset(var.enable_lifecycle_policy ? var.repository_names : [])
 
-  repository = aws_ecr_repository.default[each.value].name
+  repository = aws_ecr_repository.default[each.value].id
 
   policy = local.ecr_policy_to_apply
 }
@@ -113,6 +113,6 @@ data "aws_iam_policy_document" "default" {
 resource "aws_ecr_repository_policy" "default" {
   for_each = toset(local.ecr_policies != null ? var.repository_names : [])
 
-  repository = aws_ecr_repository.default[each.value].name
+  repository = aws_ecr_repository.default[each.value].id
   policy     = join("", data.aws_iam_policy_document.default[*].json)
 }
