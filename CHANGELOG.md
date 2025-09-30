@@ -5,6 +5,16 @@ All notable changes to this project will automatically be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.3.1 - 2025-09-30
+
+### What's Changed
+
+#### 🐛 Bug Fixes
+
+* fix: use .id instead of .name to avoid issues with / in names (#25) @jverhoeks
+
+**Full Changelog**: https://github.com/schubergphilis/terraform-aws-mcaf-ecr/compare/v1.3.0...v1.3.1
+
 ## v1.3.0 - 2025-08-20
 
 Adding filter for mutable tags
