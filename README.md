@@ -1,6 +1,7 @@
 # terraform-aws-mcaf-ecr
 
 Terraform module to setup and manage AWS Elastic Container Registry (ECR) repositories.
+ECR pull through can be stup with submodule ecr-pull-through-cache.
 
 IMPORTANT: We do not pin modules to versions in our examples. We highly recommend that in your code you pin the version to the exact version you are using so that your infrastructure remains stable.
 
