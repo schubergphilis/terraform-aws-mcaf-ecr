@@ -93,14 +93,14 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.27.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ecr_kms"></a> [ecr\_kms](#module\_ecr\_kms) | schubergphilis/mcaf-kms/aws | ~> 1.0.0 |
-| <a name="module_ecr_pull_through_cache"></a> [ecr\_pull\_through\_cache](#module\_ecr\_pull\_through\_cache) | ./modules/ecr-pull-through-cache | n/a |
+| <a name="module_ecr_pull_through_cache"></a> [ecr\_pull\_through\_cache](#module\_ecr\_pull\_through\_cache) | ../pull-through-cache | n/a |
 | <a name="module_ecr_repo_creation_template_role"></a> [ecr\_repo\_creation\_template\_role](#module\_ecr\_repo\_creation\_template\_role) | schubergphilis/mcaf-role/aws | ~> 0.5.3 |
 
 ## Resources
