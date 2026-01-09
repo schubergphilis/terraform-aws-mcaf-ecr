@@ -51,7 +51,7 @@ module "ecr_repo_creation_template_role" {
 
 module "ecr_pull_through_cache" {
   count                             = var.create_pull_through_cache ? 1 : 0
-  source                            = "./modules/ecr-pull-through-cache"
+  source                            = "../pull-through-cache"
   create_registry_policy            = true
   ecr_creation_template_role_arn    = length(module.ecr_repo_creation_template_role) > 0 ? module.ecr_repo_creation_template_role[0].arn : null
   ecr_readonly_principals           = var.ecr_readonly_principals

@@ -1,5 +1,8 @@
 # ECR Pull-Through Cache Setup
 
+> [!NOTE]
+This module uses pull-through-cache module
+
 This Terraform module bootstraps resources used to create ECR pull-through caches for public registries (for example `ghcr.io`, `quay.io`, `registry.k8s.io`, `public.ecr.aws`, etc.). It wires together:
 
 - a KMS key (via `module.ecr_kms`) for encrypting secrets and ECR-related resources,
