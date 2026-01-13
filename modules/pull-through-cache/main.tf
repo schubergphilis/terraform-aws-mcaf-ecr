@@ -1,5 +1,5 @@
 resource "aws_ecr_pull_through_cache_rule" "default" {
-  for_each = { for k, v in var.registry_pull_through_cache_rules : k => v if var.create }
+  for_each = { for k, v in var.ecr_pull_through_cache_rules : k => v if var.create }
 
   ecr_repository_prefix = each.value.ecr_repository_prefix
   upstream_registry_url = each.value.upstream_registry_url
@@ -13,7 +13,7 @@ resource "aws_ecr_registry_policy" "default" {
 }
 
 resource "aws_ecr_repository_creation_template" "default" {
-  for_each = { for k, v in var.registry_pull_through_cache_rules : k => v if var.create }
+  for_each = { for k, v in var.ecr_pull_through_cache_rules : k => v if var.create }
 
   custom_role_arn      = var.ecr_creation_template_role_arn
   image_tag_mutability = "IMMUTABLE"

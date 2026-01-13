@@ -34,7 +34,7 @@ variable "kms_key_arn" {
   default     = null
 }
 
-variable "registry_pull_through_cache_rules" {
+variable "ecr_pull_through_cache_rules" {
   description = "List of pull through cache rules to create"
   type = map(object({
     prefix       = string
