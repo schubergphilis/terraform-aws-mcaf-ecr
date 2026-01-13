@@ -36,6 +36,16 @@ variable "kms_key_arn" {
 
 variable "registry_pull_through_cache_rules" {
   description = "List of pull through cache rules to create"
-  type        = map(map(string))
-  default     = {}
+  type = map(object({
+    prefix       = string
+    registry_url = string
+    description  = string
+  }))
+  default = {
+    github = {
+      prefix       = "github-public"
+      registry_url = "ghcr.io"
+      description  = "ECR Pull Through Secret ghcr.io"
+    }
+  }
 }
