@@ -74,4 +74,3 @@ data "aws_iam_policy_document" "ecr_repo_creation_template" {
     resources = ["arn:aws:ecr:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:repository/*"]
   }
 }
-

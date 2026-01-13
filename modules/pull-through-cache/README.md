@@ -1,6 +1,8 @@
 # ECR Pull-Through Cache Setup
 This module creates cache rule, registry policy and repository creation template for ECR .
 
+Sample creation of a github pull through cache is under examples/github.
+
 ```hcl
 module "ecr_pull_through_cache" {
   source                            = "../pull-through-cache"
@@ -14,6 +16,30 @@ module "ecr_pull_through_cache" {
     }
   }
 }
+```
+
+For pull through cache configuration you can use following samples.
+```hcl
+{
+  ecrpub = {
+    ecr_repository_prefix = "ecr-public"
+    upstream_registry_url = "public.ecr.aws"
+  }
+  github = {
+    ecr_repository_prefix = "github-public"
+    upstream_registry_url = "ghcr.io"
+    credential_arn        = aws_secretsmanager_secret.github_registry.arn
+  }
+  k8s = {
+    ecr_repository_prefix = "k8s-public"
+    upstream_registry_url = "registry.k8s.io"
+  }
+  quay = {
+    ecr_repository_prefix = "quay-public"
+    upstream_registry_url = "quay.io"
+  }
+}
+
 ```
 
 ## Requirements
