@@ -4,22 +4,32 @@ variable "create" {
   default     = true
 }
 
+variable "create_ecr_repo_creation_role" {
+  type        = bool
+  default     = true
+  description = "Create the IAM role used as a template for ECR repository creation (module.ecr_repo_creation_template_role)."
+}
+
 variable "create_registry_policy" {
   description = "Determines whether a registry policy will be created"
   type        = bool
   default     = false
 }
 
-variable "resource_tags" {
-  description = "The resource tags"
-  type        = map(string)
-  default     = null
-}
-
 variable "ecr_creation_template_role_arn" {
   description = "The custom role arn for the creation template"
   type        = string
   default     = null
+}
+
+variable "ecr_pull_through_cache_rules" {
+  description = "List of pull through cache rules to create"
+  type = map(object({
+    ecr_repository_prefix = string
+    upstream_registry_url = string
+    credential_arn        = optional(string)
+    description           = string
+  }))
 }
 
 variable "ecr_readonly_principals" {
@@ -34,18 +44,14 @@ variable "kms_key_arn" {
   default     = null
 }
 
-variable "ecr_pull_through_cache_rules" {
-  description = "List of pull through cache rules to create"
-  type = map(object({
-    prefix       = string
-    registry_url = string
-    description  = string
-  }))
-  default = {
-    github = {
-      prefix       = "github-public"
-      registry_url = "ghcr.io"
-      description  = "ECR Pull Through Secret ghcr.io"
-    }
-  }
+variable "permissions_boundary" {
+  type        = string
+  default     = null
+  description = "Name of Permissions Boundary, including path. (e.g. /ep/workload_boundary)"
+}
+
+variable "resource_tags" {
+  description = "The resource tags"
+  type        = map(string)
+  default     = null
 }

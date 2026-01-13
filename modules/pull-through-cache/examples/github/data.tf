@@ -52,25 +52,3 @@ data "aws_iam_policy_document" "ecr_kms_key_policy" {
     }
   }
 }
-
-data "aws_iam_policy_document" "ecr_repo_creation_template" {
-  statement {
-    actions = [
-      "kms:CreateGrant",
-      "kms:RetireGrant",
-      "kms:DescribeKey",
-    ]
-
-    resources = ["arn:aws:kms:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:key/*"]
-  }
-  statement {
-    actions = [
-      "ecr:CreateRepository",
-      "ecr:ReplicateImage",
-      "ecr:TagResource",
-      "ecr:BatchImportUpstreamImage",
-    ]
-
-    resources = ["arn:aws:ecr:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:repository/*"]
-  }
-}

@@ -13,19 +13,6 @@ module "ecr_kms" {
   policy      = data.aws_iam_policy_document.ecr_kms_key_policy.json
 }
 
-module "ecr_repo_creation_template_role" {
-  source  = "schubergphilis/mcaf-role/aws"
-  version = "~> 0.5.3"
-
-  name                  = "EcrRepositoryCreationTemplate"
-  create_policy         = true
-  permissions_boundary  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/boundary"
-  postfix               = false
-  principal_type        = "Service"
-  principal_identifiers = ["ecr.amazonaws.com"]
-  role_policy           = data.aws_iam_policy_document.ecr_repo_creation_template.json
-}
-
 module "ecr_pull_through_cache" {
   source                         = "../.."
   create_registry_policy         = true
@@ -36,5 +23,6 @@ module "ecr_pull_through_cache" {
     ecr_repository_prefix = "github-public"
     upstream_registry_url = "ghcr.io"
     credential_arn        = aws_secretsmanager_secret.github_registry.arn
+    description           = "ECR Pull Through Secret ghcr.io"
   } }
 }
