@@ -1,24 +1,11 @@
 # ECR Pull-Through Cache Setup
-This module creates cache rule, registry policy and repository creation template for ECR .
 
-Sample creation of a github pull through cache is under examples/github.
+This module creates cache rules, registry policy and repository creation template for ECR.
 
-```hcl
-module "ecr_pull_through_cache" {
-  source                            = "../pull-through-cache"
-  create_registry_policy            = true
-  ecr_creation_template_role_arn    = "arn:aws:iam::123456789012:role/rolename"
-  ecr_readonly_principals           = ["1234567890"]
-  kms_key_arn                       = "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
-  ecr_pull_through_cache_rules = {ecrpub = {
-    ecr_repository_prefix = "ecr-public"
-    upstream_registry_url = "public.ecr.aws"
-    }
-  }
-}
-```
+Sample creation of a github pull through cache is under examples/pull-through-cache.
 
-For pull through cache configuration you can use following samples.
+For the pull through cache rules configuration, a sample of the most common registries can be found below:
+
 ```hcl
 {
   ecrpub = {
@@ -28,7 +15,6 @@ For pull through cache configuration you can use following samples.
   github = {
     ecr_repository_prefix = "github-public"
     upstream_registry_url = "ghcr.io"
-    credential_arn        = aws_secretsmanager_secret.github_registry.arn
   }
   k8s = {
     ecr_repository_prefix = "k8s-public"
@@ -41,58 +27,6 @@ For pull through cache configuration you can use following samples.
 }
 
 ```
-## Requirements
-
-No requirements.
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.28.0 |
-
-## Modules
-
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_ecr_repo_creation_template_role"></a> [ecr\_repo\_creation\_template\_role](#module\_ecr\_repo\_creation\_template\_role) | schubergphilis/mcaf-role/aws | ~> 0.5.3 |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [aws_ecr_pull_through_cache_rule.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_pull_through_cache_rule) | resource |
-| [aws_ecr_registry_policy.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_registry_policy) | resource |
-| [aws_ecr_repository_creation_template.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository_creation_template) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [aws_iam_policy_document.creation_template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.ecr_repo_creation_template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.registry](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_create"></a> [create](#input\_create) | Determines whether resources will be created (affects all resources) | `bool` | `true` | no |
-| <a name="input_create_ecr_repo_creation_role"></a> [create\_ecr\_repo\_creation\_role](#input\_create\_ecr\_repo\_creation\_role) | Create the IAM role used as a template for ECR repository creation (module.ecr\_repo\_creation\_template\_role). | `bool` | `true` | no |
-| <a name="input_create_registry_policy"></a> [create\_registry\_policy](#input\_create\_registry\_policy) | Determines whether a registry policy will be created | `bool` | `false` | no |
-| <a name="input_ecr_creation_template_role_arn"></a> [ecr\_creation\_template\_role\_arn](#input\_ecr\_creation\_template\_role\_arn) | The custom role arn for the creation template | `string` | `null` | no |
-| <a name="input_ecr_pull_through_cache_rules"></a> [ecr\_pull\_through\_cache\_rules](#input\_ecr\_pull\_through\_cache\_rules) | List of pull through cache rules to create | <pre>map(object({<br/>    prefix       = string<br/>    registry_url = string<br/>    description  = string<br/>  }))</pre> | <pre>{<br/>  "github": {<br/>    "description": "ECR Pull Through Secret ghcr.io",<br/>    "prefix": "github-public",<br/>    "registry_url": "ghcr.io"<br/>  }<br/>}</pre> | no |
-=======
-| <a name="input_ecr_pull_through_cache_rules"></a> [ecr\_pull\_through\_cache\_rules](#input\_ecr\_pull\_through\_cache\_rules) | List of pull through cache rules to create | <pre>map(object({<br>    ecr_repository_prefix = string<br>    upstream_registry_url = string<br>    credential_arn        = optional(string)<br>    description           = optional(string)<br>  }))</pre> | <pre>{<br>  "github": {<br>    "description": "ECR Pull Through Secret ghcr.io",<br>    "ecr_repository_prefix": "github-public",<br>    "upstream_registry_url": "ghcr.io"<br>  }<br>}</pre> | no |
-| <a name="input_ecr_readonly_principals"></a> [ecr\_readonly\_principals](#input\_ecr\_readonly\_principals) | List of AWS account IDs. Account IDs (12 digits) will be converted to `arn:aws:iam::<account-id>:root`. | `list(string)` | `[]` | no |
-| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The KMS key used for encryption | `string` | `null` | no |
-| <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | Name of Permissions Boundary, including path. (e.g. /ep/workload\_boundary) | `string` | `null` | no |
-| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | The resource tags | `map(string)` | `null` | no |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_ecr_pull_through_cache_rules"></a> [ecr\_pull\_through\_cache\_rules](#output\_ecr\_pull\_through\_cache\_rules) | Map of ECR pull through cache rules created |
-| <a name="output_ecr_registry_policy_id"></a> [ecr\_registry\_policy\_id](#output\_ecr\_registry\_policy\_id) | ECR registry policy resource id |
-| <a name="output_ecr_repository_creation_templates"></a> [ecr\_repository\_creation\_templates](#output\_ecr\_repository\_creation\_templates) | Map of ECR repository creation templates |
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

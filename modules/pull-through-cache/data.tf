@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "registry" {
     ]
     principals {
       type        = "AWS"
-      identifiers = [for k in var.ecr_readonly_principals : "arn:aws:iam::${k}:root"]
+      identifiers = [for k in var.readonly_principals : "arn:aws:iam::${k}:root"]
     }
     resources = [
       "arn:aws:ecr:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:repository/*"
@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "creation_template" {
     ]
     principals {
       type        = "AWS"
-      identifiers = [for k in var.ecr_readonly_principals : "arn:aws:iam::${k}:root"]
+      identifiers = [for k in var.readonly_principals : "arn:aws:iam::${k}:root"]
     }
   }
 }
