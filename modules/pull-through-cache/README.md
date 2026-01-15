@@ -31,13 +31,16 @@ For the pull through cache rules configuration, a sample of the most common regi
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.8.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.8.0 |
 
 ## Modules
 
@@ -62,15 +65,15 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_ecr_pull_through_cache_rules"></a> [ecr\_pull\_through\_cache\_rules](#input\_ecr\_pull\_through\_cache\_rules) | List of pull through cache rules to create | <pre>map(object({<br/>    ecr_repository_prefix = string<br/>    upstream_registry_url = string<br/>    credential_arn        = optional(string)<br/>    description           = string<br/>  }))</pre> | n/a | yes |
+| <a name="input_pull_through_cache_rules"></a> [pull\_through\_cache\_rules](#input\_pull\_through\_cache\_rules) | List of pull through cache rules to create | <pre>map(object({<br/>    credential_arn        = optional(string)<br/>    description           = string<br/>    ecr_repository_prefix = string<br/>    upstream_registry_url = string<br/>  }))</pre> | n/a | yes |
 | <a name="input_create"></a> [create](#input\_create) | Determines whether resources will be created (affects all resources) | `bool` | `true` | no |
-| <a name="input_create_ecr_repo_creation_role"></a> [create\_ecr\_repo\_creation\_role](#input\_create\_ecr\_repo\_creation\_role) | Create the IAM role used as a template for ECR repository creation (module.ecr\_repo\_creation\_template\_role). | `bool` | `true` | no |
+| <a name="input_create_ecr_repository_creation_role"></a> [create\_ecr\_repository\_creation\_role](#input\_create\_ecr\_repository\_creation\_role) | Create the IAM role used as a template for ECR repository creation. | `bool` | `true` | no |
 | <a name="input_create_registry_policy"></a> [create\_registry\_policy](#input\_create\_registry\_policy) | Determines whether a registry policy will be created | `bool` | `false` | no |
-| <a name="input_ecr_creation_template_role_arn"></a> [ecr\_creation\_template\_role\_arn](#input\_ecr\_creation\_template\_role\_arn) | The custom role arn for the creation template | `string` | `null` | no |
-| <a name="input_ecr_readonly_principals"></a> [ecr\_readonly\_principals](#input\_ecr\_readonly\_principals) | List of AWS account IDs. Account IDs (12 digits) will be converted to `arn:aws:iam::<account-id>:root`. | `list(string)` | `[]` | no |
+| <a name="input_custom_ecr_repository_creation_role_arn"></a> [custom\_ecr\_repository\_creation\_role\_arn](#input\_custom\_ecr\_repository\_creation\_role\_arn) | Custom role ARN for the creation template | `string` | `null` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The KMS key used for encryption | `string` | `null` | no |
 | <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | Name of Permissions Boundary, including path. (e.g. /ep/workload\_boundary) | `string` | `null` | no |
-| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | The resource tags | `map(string)` | `null` | no |
+| <a name="input_readonly_principals"></a> [readonly\_principals](#input\_readonly\_principals) | List of AWS account IDs. Account IDs (12 digits) will be converted to `arn:aws:iam::<account-id>:root`. | `list(string)` | `[]` | no |
+| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | The resource tags | `map(string)` | `{}` | no |
 
 ## Outputs
 
